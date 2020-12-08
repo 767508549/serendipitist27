@@ -1,10 +1,9 @@
 @echo off
-For /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set mydate=%%c-%%a-%%b)
-For /f "tokens=1-2 delims=/:" %%a in ('time /t') do (set mytime=%%a%%b)
-echo %mydate%_%mytime%
-SET TIME=%mydate%_%mytime%.md
-echo %TIME%
-hugo new %TIME%
-echo A post has been created!
-sleep 2
-  
+for /f "tokens=2 delims==" %%a in ('wmic OS Get localdatetime /value') do set "dt=%%a"
+set "YY=%dt:~2,2%" & set "YYYY=%dt:~0,4%" & set "MM=%dt:~4,2%" & set "DD=%dt:~6,2%"
+set "HH=%dt:~8,2%" & set "Min=%dt:~10,2%" & set "Sec=%dt:~12,2%"
+set "fullstamp=%YYYY%%MM%%DD%%HH%%Min%%Sec%"
+::echo fullstamp: "%fullstamp%"
+set postname=post_%fullstamp%.md
+hugo new %postname%
+cmd
